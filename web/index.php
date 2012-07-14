@@ -22,7 +22,8 @@
     <body onload="javascript:initstage()">
 
 	<div class="canvasHolder">
-		<canvas id="testCanvas" width="960" height="400"></canvas>
+		<canvas id="testCanvas" width="800" height="600" >                    
+                </canvas>
 	</div>        
     </body>
 </html>

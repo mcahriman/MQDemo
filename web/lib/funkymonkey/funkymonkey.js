@@ -15,8 +15,8 @@ FunkyMonkey = function() {
    var state = d_right;
    var fieldWidth;
    var fieldHeight;
-   var minY=32;
-   var minX=32;
+   var minY=20;
+   var minX=0;
    var oldState;
    
    var spriteMap = {};
@@ -30,7 +30,7 @@ FunkyMonkey = function() {
    //fsm with no accepting state
    this.roam = function () {
        var maxX = fieldWidth - 32;
-       var maxY = fieldHeight - 32;
+       var maxY = fieldHeight - 80;
        switch(state) {
             case d_up:
                 animation.y--;
@@ -128,7 +128,7 @@ initstage = function () {
         for(var i = 0; i < monkeysCount; i++ ) {
             var monkey = new FunkyMonkey();
             var w = stage.canvas.width;
-            var h = stage.canvas.height;
+            var h = stage.canvas.height - 70;
             monkey.setLocation(Math.floor(w*Math.random()), Math.floor(h*Math.random()))
             monkey.setDirection(d_down);
             monkey.attachTo(stage);

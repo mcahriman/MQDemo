@@ -7,6 +7,7 @@ var d_right = 90;
 var d_down = 180;
 var d_left = 270;
 var d_accept = -1;
+var d_ready = -2;
 
 var roamRandFactor = 0.05;
 
@@ -82,6 +83,7 @@ FunkyMonkey = function() {
    spriteMap[d_down] =  "m_down";
    spriteMap[d_left] = "m_left";
    spriteMap[d_right] ="m_right";
+   spriteMap[d_ready] ="m_ready";
    
        
    
@@ -107,6 +109,16 @@ FunkyMonkey = function() {
        if(Math.random() < roamRandFactor ) {
           state = getRandomState()
        }       
+   }
+   
+   this.setReady = function() {
+	   this.setDirection(d_ready);
+   }
+   
+   this.setIdle = function() {
+	   if (state == d_idle) {
+			this.setDirection(state);
+	   }
    }
    
    //fsm with accepting state:
@@ -199,7 +211,7 @@ FunkyMonkey.prototype.ss = new createjs.SpriteSheet({
             "m_right": [6,8, "m_right", 2],
             "m_up": [9,11, "m_up", 2],
             "m_idle": [0,0,'m_idle', 6],
-            "m_ready": [0,1,'m_idle',6]
+            "m_ready": [0,1,'m_ready',6]
 
     },
             "images": ["assets/sprites/PinedaVX-monkeytophat.png"],
@@ -221,13 +233,25 @@ rungame = function() {
 
 		var canvas = document.getElementById("testCanvas");
         var stage = new createjs.Stage(canvas);
+        var readymonkey;
         monkeys = [];
+        
         canvas.onclick = function(e) {
 			obj = stage.getObjectUnderPoint(e.offsetX, e.offsetY);
 			if (obj && typeof(obj.referenceObj) != 'undefined') {
 				var monkey = obj.referenceObj;
 				console.debug(monkey);
-				monkey.cycleModes();
+				if(monkey === readymonkey) {
+					monkey.cycleModes();
+				} else {
+					if(typeof(readymonkey) != 'undefined')  {
+						monkey.setIdle();
+					}
+					readymonkey = monkey;
+					readymonkey.setReady();										
+				}
+			} else {
+				
 			}
 		}
         

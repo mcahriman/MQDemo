@@ -36,6 +36,7 @@ FunkyMonkey = function() {
 	   switch(newMode) {
 		   case 'idle':
 			 this.setDirection(d_idle);
+			 state = d_idle;
 			 break;
 		   case 'roam':
 		     state = getRandomState();
@@ -48,6 +49,12 @@ FunkyMonkey = function() {
 	   mode = newMode;
    }
    
+   this.moveTo = function(x,y) {
+	   destinationX = x;
+	   destinationY = y;
+	   this.setMode('move');
+   }
+   
    this.processAction = function() {
 	   switch(mode) {
 		   case 'roam':
@@ -56,7 +63,7 @@ FunkyMonkey = function() {
 		   case 'idle':
 			  break;
 		   case 'move':
-			  this.moveToPoint();
+			  this.moveToPointFsm();
 			  break;
 			  
 	   }
@@ -117,12 +124,12 @@ FunkyMonkey = function() {
    
    this.setIdle = function() {
 	   if (state == d_idle) {
-			this.setDirection(state);
+			this.setDirection(d_idle);
 	   }
    }
    
    //fsm with accepting state:
-   this.moveToPoint = function() {
+   this.moveToPointFsm = function() {
 	   var maxX = fieldWidth - 32;
 	   var maxY = fieldWidth - 32;
 	   var direction;
@@ -158,6 +165,7 @@ FunkyMonkey = function() {
 				this.setMode('idle'); 
 			}
 	   }
+	   this.move(state);
    }
    
    this.setLocation = function(x,y) {
@@ -251,7 +259,7 @@ rungame = function() {
 					readymonkey.setReady();										
 				}
 			} else {
-				
+				readymonkey.moveTo(e.offsetX, e.offsetY);				
 			}
 		}
         

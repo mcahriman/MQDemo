@@ -1,7 +1,7 @@
 DEMO = function() {
 
-var monkeysCount = 200;
-var d_idle = -1;
+var monkeysCount = 50;
+var d_idle = 500;
 var d_up = 0;
 var d_right = 90;
 var d_down = 180;
@@ -9,6 +9,7 @@ var d_left = 270;
 var roamRandFactor = 0.05;
 
 var statelist = [d_up, d_right, d_down, d_left];
+var modelist = ['roam', 'idle'];
 
 FunkyMonkey = function() {
    var animation = new createjs.BitmapAnimation(this.ss);
@@ -18,6 +19,46 @@ FunkyMonkey = function() {
    var minY=20;
    var minX=0;
    var oldState;
+   var mode = 'roam';
+   animation.referenceObj = this;
+   
+   this.setMode = function(newMode) {
+	   mode = newMode;
+	   switch(mode) {
+		   case 'idle':
+			 this.setDirection(d_idle);
+			 break;
+		   case 'roam':
+			 this.setDirection(d_left);
+			 break;
+	   }
+   }
+   
+   this.processAction = function() {
+	   switch(mode) {
+		   case 'roam':
+			  this.roam();
+			  break;
+		   case 'idle':
+			  break;
+			  
+	   }
+   }
+   
+   this.cycleModes = function() {
+	   var cycle_len = modelist.length;	   
+	   var nextmode = 0;
+	   for(var i=0; i < cycle_len; i++) {
+	        if(modelist[i] == mode) {
+				nextmode = i + 1;
+			}
+			if(nextmode >= cycle_len) {
+				nextmode = 0;
+			}
+	   }
+	   mode = modelist[nextmode];
+	   this.setMode(mode);
+   }
    
    var spriteMap = {};
    spriteMap[d_up] = "m_up";
@@ -25,7 +66,8 @@ FunkyMonkey = function() {
    spriteMap[d_down] =  "m_down";
    spriteMap[d_left] = "m_left";
    spriteMap[d_right] ="m_right";
-        
+   
+       
    
    //fsm with no accepting state
    this.roam = function () {
@@ -49,7 +91,7 @@ FunkyMonkey = function() {
                 if( animation.x <= minX ) {state = d_up;}
                 break;
        }
-       this.move(state)
+       this.move(state);
        if(Math.random() < roamRandFactor ) {
           randno = Math.floor(Math.random() * statelist.length);
           state = statelist[randno];
@@ -103,7 +145,7 @@ FunkyMonkey.prototype.ss = new createjs.SpriteSheet({
             "m_left": [3, 5, "m_left", 2],
             "m_right": [6,8, "m_right", 2],
             "m_up": [9,11, "m_up", 2],
-            "m_idle": [1]
+            "m_idle": [0,1,'m_idle', 6]
 
     },
             "images": ["assets/sprites/PinedaVX-monkeytophat.png"],
@@ -118,20 +160,32 @@ FunkyMonkey.prototype.ss = new createjs.SpriteSheet({
     });
     
 initstage = function () {
+		setTimeout(rungame, 1000);
+}
 
-        // create a new stage and point it at our canvas:
-        var stage = new createjs.Stage(document.getElementById("testCanvas"));
-//        stage.canvas.width = window.width;
-//        stage.canvas.height = window.height;
+rungame = function() {
+
+		var canvas = document.getElementById("testCanvas");
+        var stage = new createjs.Stage(canvas);
         monkeys = [];
+        canvas.onclick = function(e) {
+			obj = stage.getObjectUnderPoint(e.offsetX, e.offsetY);
+			if (obj && typeof(obj.referenceObj) != 'undefined') {
+				var monkey = obj.referenceObj;
+				console.debug(monkey);
+				monkey.cycleModes();
+			}
+		}
+        
         
         for(var i = 0; i < monkeysCount; i++ ) {
             var monkey = new FunkyMonkey();
             var w = stage.canvas.width;
             var h = stage.canvas.height - 70;
-            monkey.setLocation(Math.floor(w*Math.random()), Math.floor(h*Math.random()))
-            monkey.setDirection(d_down);
             monkey.attachTo(stage);
+            monkey.setLocation(Math.floor(w*Math.random()), Math.floor(h*Math.random()));
+            
+            monkey.setMode('idle');
             monkeys[i] =  monkey;
         }
         
@@ -143,7 +197,7 @@ initstage = function () {
 
 tick = function() {
     for(var i = 0; i < monkeys.length; i++) {
-        monkeys[i].roam();
+        monkeys[i].processAction();
     }
     
 }

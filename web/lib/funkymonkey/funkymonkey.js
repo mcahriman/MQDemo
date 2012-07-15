@@ -1,219 +1,227 @@
 DEMO = function() {
 
-var monkeysCount = 50;
-var d_idle = 500;
-var d_up = 0;
-var d_right = 90;
-var d_down = 180;
-var d_left = 270;
-var d_accept = -1;
-var d_ready = -2;
+    var monkeysCount = 50;
+    var d_idle = 500;
+    var d_up = 0;
+    var d_right = 90;
+    var d_down = 180;
+    var d_left = 270;
+    var d_accept = -1;
+    var d_ready = -2;
 
-var roamRandFactor = 0.05;
+    var roamRandFactor = 0.05;
 
-var statelist = [d_up, d_right, d_down, d_left];
-var modeCycleList = ['roam', 'idle'];
+    var statelist = [d_up, d_right, d_down, d_left];
+    var modeCycleList = ['roam', 'idle'];
 
-FunkyMonkey = function() {
-   var animation = new createjs.BitmapAnimation(this.ss);
-   var state = d_right;
-   var fieldWidth;
-   var fieldHeight;
-   var minY=20;
-   var minX=0;
-   var oldState;
-   var mode = 'roam';
-   animation.referenceObj = this;
-   var destinationX;
-   var destinationY;
+    FunkyMonkey = function() {
+        var animation = new createjs.BitmapAnimation(this.ss);
+        var state = d_right;
+        var fieldWidth;
+        var fieldHeight;
+        var minY=20;
+        var minX=0;
+        var oldState;
+        var mode = 'roam';
+        animation.referenceObj = this;
+        var destinationX;
+        var destinationY;
    
-   function getRandomState() {
-	  randno = Math.floor(Math.random() * statelist.length);
-      return statelist[randno];
-   } 
+        function getRandomState() {
+            randno = Math.floor(Math.random() * statelist.length);
+            return statelist[randno];
+        } 
    
-   this.setMode = function(newMode) {
-	   switch(newMode) {
-		   case 'idle':
-			 this.setDirection(d_idle);
-			 state = d_idle;
-			 break;
-		   case 'roam':
-		     state = getRandomState();
-		     this.setDirection(state);
-			 break;
-		   case 'move':
-			 state = d_idle;
-			 break;
-	   }
-	   mode = newMode;
-   }
+        this.setMode = function(newMode) {
+            switch(newMode) {
+                case 'idle':
+                    this.setDirection(d_idle);
+                    state = d_idle;
+                    break;
+                case 'roam':
+                    state = getRandomState();
+                    this.setDirection(state);
+                    break;
+                case 'move':
+                    state = d_idle;
+                    break;
+            }
+            mode = newMode;
+        }
    
-   this.moveTo = function(x,y) {
-	   destinationX = x;
-	   destinationY = y;
-	   this.setMode('move');
-   }
+        this.moveTo = function(x,y) {
+            destinationX = x;
+            destinationY = y;
+            this.setMode('move');
+        }
    
-   this.processAction = function() {
-	   switch(mode) {
-		   case 'roam':
-			  this.roam();
-			  break;
-		   case 'idle':
-			  break;
-		   case 'move':
-			  this.moveToPointFsm();
-			  break;
+        this.processAction = function() {
+            switch(mode) {
+                case 'roam':
+                    this.roam();
+                    break;
+                case 'idle':
+                    break;
+                case 'move':
+                    this.moveToPointFsm();
+                    break;
 			  
-	   }
-   }
+            }
+        }
    
-   this.cycleModes = function() {
-	   var cycle_len = modeCycleList.length;	   
-	   var nextmode = 0;
-	   for(var i=0; i < cycle_len; i++) {
-	        if(modeCycleList[i] == mode) {
-				nextmode = i + 1;
-			}
-			if(nextmode >= cycle_len) {
-				nextmode = 0;
-			}
-	   }
-	   mode = modeCycleList[nextmode];
-	   this.setMode(mode);
-   }
+        this.cycleModes = function() {
+            var cycle_len = modeCycleList.length;	   
+            var nextmode = 0;
+            for(var i=0; i < cycle_len; i++) {
+                if(modeCycleList[i] == mode) {
+                    nextmode = i + 1;
+                }
+                if(nextmode >= cycle_len) {
+                    nextmode = 0;
+                }
+            }
+            mode = modeCycleList[nextmode];
+            this.setMode(mode);
+        }
    
-   var spriteMap = {};
-   spriteMap[d_up] = "m_up";
-   spriteMap[d_idle] = "m_idle";
-   spriteMap[d_down] =  "m_down";
-   spriteMap[d_left] = "m_left";
-   spriteMap[d_right] ="m_right";
-   spriteMap[d_ready] ="m_ready";
+        var spriteMap = {};
+        spriteMap[d_up] = "m_up";
+        spriteMap[d_idle] = "m_idle";
+        spriteMap[d_down] =  "m_down";
+        spriteMap[d_left] = "m_left";
+        spriteMap[d_right] ="m_right";
+        spriteMap[d_ready] ="m_ready";
    
        
    
-   //fsm with no accepting state
-   this.roam = function () {
-       var maxX = fieldWidth - 32;
-       var maxY = fieldHeight - 80;
-       switch(state) {
-            case d_up:
-                if ( animation.y <= minY ) {state = d_right;}
-                break;
-            case d_right:
-                if ( animation.x >= maxX ) {state = d_down;}
-                break;
-            case d_down:
-                if( animation.y >= maxY ) {state = d_left;}
-                break;
-            case d_left:
-                if( animation.x <= minX ) {state = d_up;}
-                break;
-       }
-       this.move(state);
-       if(Math.random() < roamRandFactor ) {
-          state = getRandomState()
-       }       
-   }
+        //fsm with no accepting state
+        this.roam = function () {
+            var maxX = fieldWidth - 32;
+            var maxY = fieldHeight - 80;
+            switch(state) {
+                case d_up:
+                    if ( animation.y <= minY ) {
+                        state = d_right;
+                    }
+                    break;
+                case d_right:
+                    if ( animation.x >= maxX ) {
+                        state = d_down;
+                    }
+                    break;
+                case d_down:
+                    if( animation.y >= maxY ) {
+                        state = d_left;
+                    }
+                    break;
+                case d_left:
+                    if( animation.x <= minX ) {
+                        state = d_up;
+                    }
+                    break;
+            }
+            this.move(state);
+            if(Math.random() < roamRandFactor ) {
+                state = getRandomState()
+            }       
+        }
    
-   this.setReady = function() {
-	   this.setDirection(d_ready);
-   }
+        this.setReady = function() {
+            this.setDirection(d_ready);
+        }
    
-   this.setIdle = function() {
-	   if (state == d_idle) {
-			this.setDirection(d_idle);
-	   }
-   }
+        this.setIdle = function() {
+            if (state == d_idle) {
+                this.setDirection(d_idle);
+            }
+        }
    
-   //fsm with accepting state:
-   this.moveToPointFsm = function() {
-	   var maxX = fieldWidth - 32;
-	   var maxY = fieldWidth - 32;
-	   var direction;
-	   //change direction to the destination
+        //fsm with accepting state:
+        this.moveToPointFsm = function() {
+            var maxX = fieldWidth - 32;
+            var maxY = fieldWidth - 32;
+            var direction;
+            //change direction to the destination
 	   
 	   
-	   this.setDirection(direction);
+            this.setDirection(direction);
 	   
-	   switch (state) {
-		case d_idle:
-			state = (animation.x >= destinationX ? d_left : d_right);
-			direction = state
-			break;
-		case d_left:
-			state = (animation.x <= destinationX ? d_accept : d_left);
-			break;
-		case d_right:
-			state = (animation.x >= destinationX ? d_accept : d_right);
-			break;
-		case d_accept:
-			state = (animation.y >= destinationY ? d_up : d_down);
-			direction = state;
-			break;
-		case d_up:
-			if(animation.y <= destinationY) { 
-				state = d_idle;				
-				this.setMode('idle'); 
-			}
-			break;
-	    case d_down:
-			if(animation.y >= destinationY) { 
-				state = d_idle;
-				this.setMode('idle'); 
-			}
-	   }
-	   this.move(state);
-   }
+            switch (state) {
+                case d_idle:
+                    state = (animation.x >= destinationX ? d_left : d_right);
+                    direction = state
+                    break;
+                case d_left:
+                    state = (animation.x <= destinationX ? d_accept : d_left);
+                    break;
+                case d_right:
+                    state = (animation.x >= destinationX ? d_accept : d_right);
+                    break;
+                case d_accept:
+                    state = (animation.y >= destinationY ? d_up : d_down);
+                    direction = state;
+                    break;
+                case d_up:
+                    if(animation.y <= destinationY) { 
+                        state = d_idle;				
+                        this.setMode('idle'); 
+                    }
+                    break;
+                case d_down:
+                    if(animation.y >= destinationY) { 
+                        state = d_idle;
+                        this.setMode('idle'); 
+                    }
+            }
+            this.move(state);
+        }
    
-   this.setLocation = function(x,y) {
-        animation.x = x;
-        animation.y = y;
-   };
+        this.setLocation = function(x,y) {
+            animation.x = x;
+            animation.y = y;
+        };
    
-   this.setDirection = function (direction) {
-	   if(state!=d_accept) {
-		   animation.gotoAndPlay(spriteMap[direction]);
-	   }
-   };
+        this.setDirection = function (direction) {
+            if(state!=d_accept) {
+                animation.gotoAndPlay(spriteMap[direction]);
+            }
+        };
    
-   this.attachTo = function(stage) {
-       stage.addChild(animation);
-       fieldWidth = stage.canvas.width;
-       fieldHeight = stage.canvas.height;
+        this.attachTo = function(stage) {
+            stage.addChild(animation);
+            fieldWidth = stage.canvas.width;
+            fieldHeight = stage.canvas.height;
        
-   };
+        };
    
-   this.move = function(direction) {
+        this.move = function(direction) {
        
-       switch(direction) {
-           case d_down:
-               animation.y++;
-               break;
-           case d_up:
-               animation.y--;
-               break;
-           case d_left:
-               animation.x--;
-               break;
-           case d_right:
-               animation.x++;
-               break;
-           default:
-			   break;
-       }
-       if(oldState != direction) {
-           this.setDirection(direction);
-           oldState = direction;
-       }
-   };
-}
+            switch(direction) {
+                case d_down:
+                    animation.y++;
+                    break;
+                case d_up:
+                    animation.y--;
+                    break;
+                case d_left:
+                    animation.x--;
+                    break;
+                case d_right:
+                    animation.x++;
+                    break;
+                default:
+                    break;
+            }
+            if(oldState != direction) {
+                this.setDirection(direction);
+                oldState = direction;
+            }
+        };
+    }
 
-FunkyMonkey.prototype.ss = new createjs.SpriteSheet({
-    "animations":
-    {
+    FunkyMonkey.prototype.ss = new createjs.SpriteSheet({
+        "animations":
+        {
             "m_down": [0, 2, "m_down", 2],
             "m_left": [3, 5, "m_left", 2],
             "m_right": [6,8, "m_right", 2],
@@ -221,47 +229,47 @@ FunkyMonkey.prototype.ss = new createjs.SpriteSheet({
             "m_idle": [0,0,'m_idle', 6],
             "m_ready": [0,1,'m_ready',6]
 
-    },
-            "images": ["assets/sprites/PinedaVX-monkeytophat.png"],
-            "frames":
-                    {
-                            "regX": 0,
-                            "regY": 0,
-                            "height": 32,
-                            "width":32,
-                            "count": 12
-                    }
+        },
+        "images": ["assets/sprites/PinedaVX-monkeytophat.png"],
+        "frames":
+        {
+            "regX": 0,
+            "regY": 0,
+            "height": 32,
+            "width":32,
+            "count": 12
+        }
     });
     
-initstage = function () {
-		setTimeout(rungame, 1000);
-}
+    initstage = function () {
+        setTimeout(rungame, 1000);
+    }
 
-rungame = function() {
+    rungame = function() {
 
-		var canvas = document.getElementById("testCanvas");
+        var canvas = document.getElementById("testCanvas");
         var stage = new createjs.Stage(canvas);
         var readymonkey;
         monkeys = [];
         
         canvas.onclick = function(e) {
-			obj = stage.getObjectUnderPoint(e.offsetX, e.offsetY);
-			if (obj && typeof(obj.referenceObj) != 'undefined') {
-				var monkey = obj.referenceObj;
-				console.debug(monkey);
-				if(monkey === readymonkey) {
-					monkey.cycleModes();
-				} else {
-					if(typeof(readymonkey) != 'undefined')  {
-						monkey.setIdle();
-					}
-					readymonkey = monkey;
-					readymonkey.setReady();										
-				}
-			} else {
-				readymonkey.moveTo(e.offsetX, e.offsetY);				
-			}
-		}
+            obj = stage.getObjectUnderPoint(e.offsetX, e.offsetY);
+            if (obj && typeof(obj.referenceObj) != 'undefined') {
+                var monkey = obj.referenceObj;
+                console.debug(monkey);
+                if(monkey === readymonkey) {
+                    monkey.cycleModes();
+                } else {
+                    if(typeof(readymonkey) != 'undefined')  {
+                        monkey.setIdle();
+                    }
+                    readymonkey = monkey;
+                    readymonkey.setReady();										
+                }
+            } else {
+                readymonkey.moveTo(e.offsetX, e.offsetY);				
+            }
+        }
         
         
         for(var i = 0; i < monkeysCount; i++ ) {
@@ -279,13 +287,13 @@ rungame = function() {
         createjs.Ticker.addListener(stage);
         
         window.setInterval(tick, 50);
-}
-
-tick = function() {
-    for(var i = 0; i < monkeys.length; i++) {
-        monkeys[i].processAction();
     }
+
+    tick = function() {
+        for(var i = 0; i < monkeys.length; i++) {
+            monkeys[i].processAction();
+        }
     
-}
+    }
 
 }();

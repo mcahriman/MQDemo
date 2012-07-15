@@ -37,7 +37,8 @@ FunkyMonkey = function() {
 			 this.setDirection(d_idle);
 			 break;
 		   case 'roam':
-		     state = d_left;
+		     state = getRandomState();
+		     this.setDirection(state);
 			 break;
 		   case 'move':
 			 state = d_idle;

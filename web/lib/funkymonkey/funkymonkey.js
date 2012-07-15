@@ -6,10 +6,12 @@ var d_up = 0;
 var d_right = 90;
 var d_down = 180;
 var d_left = 270;
+var d_accept = -1;
+
 var roamRandFactor = 0.05;
 
 var statelist = [d_up, d_right, d_down, d_left];
-var modelist = ['roam', 'idle'];
+var modeCycleList = ['roam', 'idle'];
 
 FunkyMonkey = function() {
    var animation = new createjs.BitmapAnimation(this.ss);
@@ -21,17 +23,27 @@ FunkyMonkey = function() {
    var oldState;
    var mode = 'roam';
    animation.referenceObj = this;
+   var destinationX;
+   var destinationY;
+   
+   function getRandomState() {
+	  randno = Math.floor(Math.random() * statelist.length);
+      return statelist[randno];
+   } 
    
    this.setMode = function(newMode) {
-	   mode = newMode;
-	   switch(mode) {
+	   switch(newMode) {
 		   case 'idle':
 			 this.setDirection(d_idle);
 			 break;
 		   case 'roam':
-			 this.setDirection(d_left);
+		     state = d_left;
+			 break;
+		   case 'move':
+			 state = d_idle;
 			 break;
 	   }
+	   mode = newMode;
    }
    
    this.processAction = function() {
@@ -41,22 +53,25 @@ FunkyMonkey = function() {
 			  break;
 		   case 'idle':
 			  break;
+		   case 'move':
+			  this.moveToPoint();
+			  break;
 			  
 	   }
    }
    
    this.cycleModes = function() {
-	   var cycle_len = modelist.length;	   
+	   var cycle_len = modeCycleList.length;	   
 	   var nextmode = 0;
 	   for(var i=0; i < cycle_len; i++) {
-	        if(modelist[i] == mode) {
+	        if(modeCycleList[i] == mode) {
 				nextmode = i + 1;
 			}
 			if(nextmode >= cycle_len) {
 				nextmode = 0;
 			}
 	   }
-	   mode = modelist[nextmode];
+	   mode = modeCycleList[nextmode];
 	   this.setMode(mode);
    }
    
@@ -75,28 +90,61 @@ FunkyMonkey = function() {
        var maxY = fieldHeight - 80;
        switch(state) {
             case d_up:
-                animation.y--;
                 if ( animation.y <= minY ) {state = d_right;}
                 break;
             case d_right:
-                animation.x++;
                 if ( animation.x >= maxX ) {state = d_down;}
                 break;
             case d_down:
-                animation.y++;
                 if( animation.y >= maxY ) {state = d_left;}
                 break;
             case d_left:
-                animation.x--;
                 if( animation.x <= minX ) {state = d_up;}
                 break;
        }
        this.move(state);
        if(Math.random() < roamRandFactor ) {
-          randno = Math.floor(Math.random() * statelist.length);
-          state = statelist[randno];
-       }
-       
+          state = getRandomState()
+       }       
+   }
+   
+   //fsm with accepting state:
+   this.moveToPoint = function() {
+	   var maxX = fieldWidth - 32;
+	   var maxY = fieldWidth - 32;
+	   var direction;
+	   //change direction to the destination
+	   
+	   
+	   this.setDirection(direction);
+	   
+	   switch (state) {
+		case d_idle:
+			state = (animation.x >= destinationX ? d_left : d_right);
+			direction = state
+			break;
+		case d_left:
+			state = (animation.x <= destinationX ? d_accept : d_left);
+			break;
+		case d_right:
+			state = (animation.x >= destinationX ? d_accept : d_right);
+			break;
+		case d_accept:
+			state = (animation.y >= destinationY ? d_up : d_down);
+			direction = state;
+			break;
+		case d_up:
+			if(animation.y <= destinationY) { 
+				state = d_idle;				
+				this.setMode('idle'); 
+			}
+			break;
+	    case d_down:
+			if(animation.y >= destinationY) { 
+				state = d_idle;
+				this.setMode('idle'); 
+			}
+	   }
    }
    
    this.setLocation = function(x,y) {
@@ -105,7 +153,9 @@ FunkyMonkey = function() {
    };
    
    this.setDirection = function (direction) {
-       animation.gotoAndPlay(spriteMap[direction]);
+	   if(state!=d_accept) {
+		   animation.gotoAndPlay(spriteMap[direction]);
+	   }
    };
    
    this.attachTo = function(stage) {
@@ -130,6 +180,8 @@ FunkyMonkey = function() {
            case d_right:
                animation.x++;
                break;
+           default:
+			   break;
        }
        if(oldState != direction) {
            this.setDirection(direction);
@@ -145,7 +197,8 @@ FunkyMonkey.prototype.ss = new createjs.SpriteSheet({
             "m_left": [3, 5, "m_left", 2],
             "m_right": [6,8, "m_right", 2],
             "m_up": [9,11, "m_up", 2],
-            "m_idle": [0,1,'m_idle', 6]
+            "m_idle": [0,0,'m_idle', 6],
+            "m_ready": [0,1,'m_idle',6]
 
     },
             "images": ["assets/sprites/PinedaVX-monkeytophat.png"],

@@ -176,7 +176,7 @@ DEMO = function() {
             }
             this.move(state);
         }
-        
+
         this.setLocation = function(x,y) {
             animation.x = x;
             animation.y = y;
@@ -192,6 +192,7 @@ DEMO = function() {
    
         this.attachTo = function(stage) {
             stage.addChild(animation);
+            stage.addChild(username);
             fieldWidth = stage.canvas.width;
             fieldHeight = stage.canvas.height;
        

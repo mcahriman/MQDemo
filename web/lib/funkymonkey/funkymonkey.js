@@ -16,6 +16,7 @@ DEMO = function() {
 
     FunkyMonkey = function() {
         var animation = new createjs.BitmapAnimation(this.ss);
+        var username = new createjs.Text($('div#loginForm input').val(), 'arial', '#fff');
         var state = d_right;
         var fieldWidth;
         var fieldHeight;
@@ -31,7 +32,7 @@ DEMO = function() {
             randno = Math.floor(Math.random() * statelist.length);
             return statelist[randno];
         } 
-   
+
         this.setMode = function(newMode) {
             switch(newMode) {
                 case 'idle':
@@ -175,10 +176,12 @@ DEMO = function() {
             }
             this.move(state);
         }
-   
+        
         this.setLocation = function(x,y) {
             animation.x = x;
             animation.y = y;
+            username.x = x;
+            username.y = y;
         };
    
         this.setDirection = function (direction) {
@@ -238,7 +241,7 @@ DEMO = function() {
             "height": 32,
             "width":32,
             "count": 12
-        }
+        },        
     });
     
     initstage = function () {

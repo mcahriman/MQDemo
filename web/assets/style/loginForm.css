@@ -1,0 +1,25 @@
+@font-face {
+  font-family: arcadeClassic;
+  src: url("../fonts/ARCADECLASSIC.TTF"); }
+
+div#loginForm {
+  position: fixed;
+  top: 200px;
+  left: 300px;
+  right: 300px;
+  bottom: 335px;
+  background: rgba(93, 126, 66, 0.5); }
+  div#loginForm .formText {
+    color: #ffd9ad;
+    font-family: arcadeClassic;
+    font-size: 24px;
+    text-shadow: 1px 1px 2px #6f2210;
+    text-align: center; }
+  div#loginForm button {
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    position: relative;
+    top: 3px; }
+  div#loginForm form {
+    text-align: center; }

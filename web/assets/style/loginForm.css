@@ -8,13 +8,15 @@ div#loginForm {
   left: 300px;
   right: 300px;
   bottom: 335px;
-  background: rgba(93, 126, 66, 0.5); }
+  background: rgba(93, 126, 66, 0.5);
+  z-index: 1; }
   div#loginForm .formText {
     color: #ffd9ad;
     font-family: arcadeClassic;
     font-size: 24px;
     text-shadow: 1px 1px 2px #6f2210;
-    text-align: center; }
+    text-align: center;
+    margin-top: 25px; }
   div#loginForm button {
     background: transparent;
     border: none;
@@ -23,3 +25,11 @@ div#loginForm {
     top: 3px; }
   div#loginForm form {
     text-align: center; }
+
+div#interactionBlocker {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: transparent; }

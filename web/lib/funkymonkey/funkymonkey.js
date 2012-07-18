@@ -253,8 +253,6 @@ DEMO = function() {
         monkeys = [];
         
         canvas.onclick = function(e) {
-            readymonkey.after('<div class="monkeyName"></div>')
-            $('div.monkeyName').text($('div#loginForm input').val())
             obj = stage.getObjectUnderPoint(e.offsetX, e.offsetY);
             if (obj && typeof(obj.referenceObj) != 'undefined') {
                 var monkey = obj.referenceObj;

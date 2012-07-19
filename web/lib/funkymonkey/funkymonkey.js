@@ -16,8 +16,7 @@ DEMO = function() {
 
     FunkyMonkey = function() {
         var animation = new createjs.BitmapAnimation(this.ss);
-        var username = new createjs.Text($('div#loginForm input').val(), "36px Arial", "#fff");
-        username.textBaseline = 'top';
+        var username = new createjs.Text('', "12px Arial", "#fff");
         var state = d_right;
         var fieldWidth;
         var fieldHeight;
@@ -28,6 +27,10 @@ DEMO = function() {
         animation.referenceObj = this;
         var destinationX;
         var destinationY;
+
+        this.setUsername = function(name) {
+            username.text = name;
+        }
    
         function getRandomState() {
             randno = Math.floor(Math.random() * statelist.length);
@@ -204,15 +207,19 @@ DEMO = function() {
             switch(direction) {
                 case d_down:
                     animation.y++;
+                    username.y++;
                     break;
                 case d_up:
                     animation.y--;
+                    username.y--;
                     break;
                 case d_left:
                     animation.x--;
+                    username.x--;
                     break;
                 case d_right:
                     animation.x++;
+                    username.x++;
                     break;
                 default:
                     break;
@@ -261,15 +268,17 @@ DEMO = function() {
             obj = stage.getObjectUnderPoint(e.offsetX, e.offsetY);
             if (obj && typeof(obj.referenceObj) != 'undefined') {
                 var monkey = obj.referenceObj;
+                monkey.setUsername($('div#loginForm input').val());
                 console.debug(monkey);
                 if(monkey === readymonkey) {
                     monkey.cycleModes();
                 } else {
                     if(typeof(readymonkey) != 'undefined')  {
-                        monkey.setIdle();
+                        monkey.setIdle(); 
                     }
                     readymonkey = monkey;
-                    readymonkey.setReady();										
+                    readymonkey.setReady();
+
                 }
             } else {
                 readymonkey.moveTo(e.offsetX, e.offsetY);				

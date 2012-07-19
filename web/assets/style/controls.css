@@ -1,0 +1,16 @@
+div#controlsSection {
+  position: absolute;
+  top: 40px;
+  right: 50px; }
+  div#controlsSection a {
+    display: block;
+    font-family: arcadeClassic;
+    color: #ffd9ad;
+    text-shadow: 1px 1px 2px #992210;
+    margin-bottom: 10px; }
+  div#controlsSection input {
+    font-family: arcadeClassic;
+    margin-bottom: 10px;
+    width: 142px;
+    font-size: 14px;
+    border: 1px solid #992210; }

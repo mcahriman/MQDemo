@@ -1,0 +1,12 @@
+$(document).ready(function(){
+		$(document).delegate($(this), 'keydown', function(e){
+			var code = (e.keyCode ? e.keyCode : e.which);
+			if (code == 192) {
+				if ($('div#controlsSection').hasClass('visible')){	
+					$('div#controlsSection').removeClass('visible').fadeOut();
+				} else {
+					$('canvas#testCanvas').after('<div id="controlsSection" class="visible"><a href="#" id="clear">Clear and generate</a><a href="#" id="randomize">Randomize monkeys</a><a href="#" id="move">Let them move</a><a href="#" id="move">	Stop!</a><a href="#" id="remove">Remove monkey</a><input value="name" id="monkeyName"><a href="#" id="addMonkey">Add monkey</a></div>');
+				}
+			}
+		});
+});

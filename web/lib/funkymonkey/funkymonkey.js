@@ -16,7 +16,8 @@ DEMO = function() {
 
     FunkyMonkey = function() {
         var animation = new createjs.BitmapAnimation(this.ss);
-        var username = new createjs.Text($('div#loginForm input').val(), 'arial', '#fff');
+        var username = new createjs.Text($('div#loginForm input').val(), "36px Arial", "#fff");
+        username.textBaseline = 'top';
         var state = d_right;
         var fieldWidth;
         var fieldHeight;

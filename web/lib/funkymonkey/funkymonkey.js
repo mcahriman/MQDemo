@@ -133,6 +133,7 @@ DEMO = function() {
    
         this.setReady = function() {
             this.setDirection(d_ready);
+            this.setUsername($('div#loginForm input').val())
         }
    
         this.setIdle = function() {
@@ -268,7 +269,9 @@ DEMO = function() {
             obj = stage.getObjectUnderPoint(e.offsetX, e.offsetY);
             if (obj && typeof(obj.referenceObj) != 'undefined') {
                 var monkey = obj.referenceObj;
-                monkey.setUsername($('div#loginForm input').val());
+            for(i=0; i<monkeys.length; i++){
+                monkeys[i].setUsername();
+            }
                 console.debug(monkey);
                 if(monkey === readymonkey) {
                     monkey.cycleModes();
@@ -278,7 +281,6 @@ DEMO = function() {
                     }
                     readymonkey = monkey;
                     readymonkey.setReady();
-
                 }
             } else {
                 readymonkey.moveTo(e.offsetX, e.offsetY);				

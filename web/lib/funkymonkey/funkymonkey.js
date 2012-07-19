@@ -266,7 +266,11 @@ DEMO = function() {
         monkeys = [];
         
         canvas.onclick = function(e) {
-            obj = stage.getObjectUnderPoint(e.offsetX, e.offsetY);
+	    var x = typeof(e.offsetX) != 'undefined' ? e.offsetX : e.layerX - e.target.offsetLeft;
+            var y = typeof(e.offsetY) != 'undefined' ? e.offsetY : e.layerY - e.target.offsetTop;
+
+
+            obj = stage.getObjectUnderPoint(x, y);
             if (obj && typeof(obj.referenceObj) != 'undefined') {
                 var monkey = obj.referenceObj;
             for(i=0; i<monkeys.length; i++){
@@ -283,7 +287,7 @@ DEMO = function() {
                     readymonkey.setReady();
                 }
             } else {
-                readymonkey.moveTo(e.offsetX, e.offsetY);				
+                readymonkey.moveTo(x, y);				
             }
         }
         

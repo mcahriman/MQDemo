@@ -3,11 +3,11 @@
   src: url("../fonts/ARCADECLASSIC.TTF"); }
 
 div#loginForm {
-  position: fixed;
-  top: 200px;
+  position: absolute;
+  top: 270px;
   left: 300px;
-  right: 300px;
-  bottom: 335px;
+  width: 680px;
+  padding: 40px 0;
   background: rgba(93, 126, 66, 0.5);
   z-index: 1; }
   div#loginForm .formText {

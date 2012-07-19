@@ -133,7 +133,7 @@ DEMO = function() {
    
         this.setReady = function() {
             this.setDirection(d_ready);
-            this.setUsername($('div#loginForm input').val())
+            this.setUsername($('div#loginForm input').val());
         }
    
         this.setIdle = function() {

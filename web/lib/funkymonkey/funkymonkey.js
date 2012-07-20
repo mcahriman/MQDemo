@@ -1,18 +1,18 @@
-DEMO = function() {
+function DEMO() {
 
-    var monkeysCount = 50;
-    var d_idle = 500;
-    var d_up = 0;
-    var d_right = 90;
-    var d_down = 180;
-    var d_left = 270;
-    var d_accept = -1;
-    var d_ready = -2;
+    this.monkeysCount = 50;
+    this.d_idle = 500;
+    this.d_up = 0;
+    this.d_right = 90;
+    this.d_down = 180;
+    this.d_left = 270;
+    this.d_accept = -1;
+    this.d_ready = -2;
 
-    var roamRandFactor = 0.05;
+    this.roamRandFactor = 0.05;
 
-    var statelist = [d_up, d_right, d_down, d_left];
-    var modeCycleList = ['roam', 'idle'];
+    this.statelist = [d_up, d_right, d_down, d_left];
+    this.modeCycleList = ['roam', 'idle'];
 
     FunkyMonkey = function() {
         var animation = new createjs.BitmapAnimation(this.ss);
@@ -202,6 +202,10 @@ DEMO = function() {
             fieldHeight = stage.canvas.height;
        
         };
+
+        this.removeChildren = function(stage) {
+            stage.removeAllChildren()
+        };
    
         this.move = function(direction) {
        
@@ -253,6 +257,7 @@ DEMO = function() {
             "count": 12
         },        
     });
+<<<<<<< HEAD
     
     initstage = function () {
         setTimeout(rungame, 1000);
@@ -308,6 +313,8 @@ DEMO = function() {
         
         window.setInterval(tick, 50);
     }
+=======
+>>>>>>> Separated run game functionality. Started working on menu.
 
     tick = function() {
         for(var i = 0; i < monkeys.length; i++) {
@@ -316,4 +323,6 @@ DEMO = function() {
     
     }
 
-}();
+};
+
+DEMO();

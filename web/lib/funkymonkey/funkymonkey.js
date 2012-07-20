@@ -257,7 +257,6 @@ function DEMO() {
             "count": 12
         },        
     });
-<<<<<<< HEAD
     
     initstage = function () {
         setTimeout(rungame, 1000);
@@ -313,8 +312,6 @@ function DEMO() {
         
         window.setInterval(tick, 50);
     }
-=======
->>>>>>> Separated run game functionality. Started working on menu.
 
     tick = function() {
         for(var i = 0; i < monkeys.length; i++) {

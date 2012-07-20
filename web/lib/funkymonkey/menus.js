@@ -18,8 +18,6 @@ $(document).ready(function(){
 		/*CLEAR AND GENERATE*/
 
 		$('div#controlsSection').delegate($('a#clear'), 'click', function(e){
-				e.preventDefault();
-				monkeys = new FunkyMonkey();
-				alert(monkeys.children);
+				alert('a');
 			});
 });

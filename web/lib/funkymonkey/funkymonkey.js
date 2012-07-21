@@ -290,7 +290,7 @@ function DEMO() {
                     readymonkey = monkey;
                     readymonkey.setReady();
                 }
-            } else {
+            } else if(typeof(readymonkey) != 'undefined') {
                 readymonkey.moveTo(x, y);				
             }
         }

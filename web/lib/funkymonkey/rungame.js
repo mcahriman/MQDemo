@@ -29,7 +29,7 @@ function RUN(){
                             readymonkey = monkey;
                             readymonkey.setReady();
                         }
-                    } else {
+                    } else if(typeof(readymonkey) != 'undefined') {
                         readymonkey.moveTo(e.offsetX, e.offsetY);               
                     }
                 }

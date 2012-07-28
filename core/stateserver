@@ -1,0 +1,19 @@
+#!/usr/bin/php
+<?php
+
+$broker = new Stomp();
+
+print_r($broker);
+
+if(! $broker->subscribe("/topic/CHAT.DEMO") ) {
+	die("Could not subscribe to queue");
+};
+
+while(true) {
+	if($broker->hasFrame()) {
+		$frame = $broker->readFrame();
+		$broker->ack($frame);
+		print_r($frame);
+	}
+}
+

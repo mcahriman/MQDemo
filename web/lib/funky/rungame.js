@@ -34,7 +34,7 @@ function RUN() {
         };
 
         for (var i = 0; i < monkeysCount; i++ ) {
-            var monkey = new FunkyMonkey();
+            var monkey = new FunkyCharacter();
             var w = stage.canvas.width;
             var h = stage.canvas.height - 70;
             monkey.attachTo(stage);

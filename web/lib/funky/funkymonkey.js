@@ -14,7 +14,7 @@ function DEMO() {
     this.statelist = [d_up, d_right, d_down, d_left];
     this.modeCycleList = ['roam', 'idle'];
 
-    FunkyMonkey = function() {
+    FunkyCharacter = function() {
         var animation = new createjs.BitmapAnimation(this.ss);
         var username = new createjs.Text('', "12px Arial", "#fff");
         var state = d_right;
@@ -236,7 +236,7 @@ function DEMO() {
         };
     }
 
-    FunkyMonkey.prototype.ss = new createjs.SpriteSheet({
+    FunkyCharacter.prototype.ss = new createjs.SpriteSheet({
         "animations":
         {
             "m_down": [0, 2, "m_down", 2],

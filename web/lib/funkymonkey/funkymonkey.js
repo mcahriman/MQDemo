@@ -255,7 +255,7 @@ function DEMO() {
             "height": 32,
             "width":32,
             "count": 12
-        },        
+        }        
     });
     
     initstage = function () {

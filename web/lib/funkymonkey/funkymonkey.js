@@ -30,12 +30,12 @@ function DEMO() {
 
         this.setUsername = function(name) {
             username.text = name;
-        }
-   
+        };
+
         function getRandomState() {
             randno = Math.floor(Math.random() * statelist.length);
             return statelist[randno];
-        } 
+        };
 
         this.setMode = function(newMode) {
             switch(newMode) {
@@ -52,16 +52,16 @@ function DEMO() {
                     break;
             }
             mode = newMode;
-        }
+        };
    
         this.moveTo = function(x,y) {
             destinationX = x;
             destinationY = y;
             this.setMode('move');
-        }
-   
+        };
+
         this.processAction = function() {
-            switch(mode) {
+            switch (mode) {
                 case 'roam':
                     this.roam();
                     break;

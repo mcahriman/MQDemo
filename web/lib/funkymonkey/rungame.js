@@ -49,5 +49,15 @@ function RUN() {
                 
         window.setInterval(tick, 50);
     }
+    
+    tick = function() {
+        for(var i = 0; i < monkeys.length; i++) {
+            monkeys[i].processAction();
+        }
+    
+    };
+    initstage = function () {
+        setTimeout(rungame, 1000);
+    }
 };
 RUN();

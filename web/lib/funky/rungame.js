@@ -1,9 +1,20 @@
 RUN.prototype = DEMO;
-
+//TODO: refactor
 function RUN() {
     initstage = function () {
         setTimeout(rungame, 1000);
     };
+    
+    addRandomMonkey = function(stage) {
+        var monkey = new FunkyMonkey();
+        var w = stage.canvas.width;
+        var h = stage.canvas.height - 70;
+        monkey.attachTo(stage);
+        monkey.setLocation(Math.floor(w*Math.random()), Math.floor(h*Math.random()));
+        monkey.removeRoamMode();
+        monkey.setMode('idle');
+        return monkey;
+    }
 
     rungame = function () {
 
@@ -16,7 +27,7 @@ function RUN() {
             if (obj && typeof (obj.referenceObj) !== 'undefined') {
                 var monkey = obj.referenceObj;
                 for (i = 0; i < monkeys.length; i++) {
-                    monkeys[i].setUsername();
+                    monkeys[i].setCaption("");
                 }
                 console.debug(monkey);
                 if (monkey === readymonkey) {
@@ -34,14 +45,7 @@ function RUN() {
         };
 
         for (var i = 0; i < monkeysCount; i++ ) {
-            var monkey = new FunkyMonkey();
-            var w = stage.canvas.width;
-            var h = stage.canvas.height - 70;
-            monkey.attachTo(stage);
-            monkey.setLocation(Math.floor(w*Math.random()), Math.floor(h*Math.random()));
-                    
-            monkey.setMode('idle');
-            monkeys[i] =  monkey;
+            monkeys[i] =  addRandomMonkey(stage);
         }
                 
         createjs.Ticker.setFPS(20);

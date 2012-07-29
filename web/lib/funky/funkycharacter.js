@@ -28,9 +28,14 @@ function DEMO() {
         var destinationX;
         var destinationY;
 
-        this.setUsername = function(name) {
+        this.setCaption = function(name) {
             username.text = name;
         };
+        
+        //TODO: factor out some day
+        this.removeRoamMode = function() {
+            modeCycleList = ['idle'];
+        }
 
         function getRandomState() {
             randno = Math.floor(Math.random() * statelist.length);
@@ -133,7 +138,7 @@ function DEMO() {
    
         this.setReady = function() {
             this.setDirection(d_ready);
-            this.setUsername($('div#loginForm input').val());
+            this.setCaption($('div#loginForm input').val());
         }
    
         this.setIdle = function() {
@@ -236,5 +241,5 @@ function DEMO() {
         };
     }
 }
-
+//TODO: refactor that
 DEMO();

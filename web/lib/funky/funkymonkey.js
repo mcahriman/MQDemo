@@ -1,8 +1,6 @@
 MONKEY.prototype = DEMO;
 function MONKEY() {
-    var FunkyMonkey = FunkyCharacter;
-    FunkyMonkey.prototype = new FunkyCharacter;
-    FunkyMonkey.prototype.constructor = FunkyCharacter;
+    FunkyMonkey = FunkyCharacter;
     FunkyMonkey.prototype.spriteSheet = new createjs.SpriteSheet({
         "animations":
         {
@@ -24,6 +22,11 @@ function MONKEY() {
             "count": 12
         }
     });
+    FunkyMonkey.prototype.constructor = FunkyCharacter;
+    FunkyMonkey.prototype.notifyAction = function(message) {
+        DemoDispatcher.send(message);
+    };
     window.FunkyMonkey = FunkyMonkey;
+    
 };
 MONKEY();

@@ -50,8 +50,7 @@ function RUN() {
                 
         createjs.Ticker.setFPS(20);
         createjs.Ticker.addListener(stage);
-                
-        window.setInterval(tick, 50);
+        createjs.Ticker.addListener(this);
     }
     
     tick = function() {

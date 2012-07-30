@@ -15,8 +15,8 @@ function DEMO() {
     this.modeCycleList = ['roam', 'idle'];
 
     FunkyCharacter = function() {
-        var animation = new createjs.BitmapAnimation(this.spriteSheet);
-        var username = new createjs.Text('', "12px Arial", "#fff");
+        var animation;
+        var caption;
         var state = d_right;
         var fieldWidth;
         var fieldHeight;
@@ -24,17 +24,31 @@ function DEMO() {
         var minX=0;
         var oldState;
         var mode = 'roam';
-        animation.referenceObj = this;
         var destinationX;
         var destinationY;
+        var monkeyId = "10897189427";
+        
+        this.init = function() {
+            animation = new createjs.BitmapAnimation(this.spriteSheet);
+            caption = new createjs.Text('', "12px Arial", "#fff");
+            animation.referenceObj = this;
+        }
 
         this.setCaption = function(name) {
-            username.text = name;
+            caption.text = name;
         };
         
         //TODO: factor out some day
         this.removeRoamMode = function() {
             modeCycleList = ['idle'];
+        }
+        
+        this.notifyDispatcher = function( message ) {
+            if(typeof(this.notifyAction) !== 'function') {
+                console.debug(message);
+            } else {
+                this.notifyAction(message);
+            }
         }
 
         function getRandomState() {
@@ -63,6 +77,9 @@ function DEMO() {
             destinationX = x;
             destinationY = y;
             this.setMode('move');
+            this.notifyDispatcher({type:"moveTo", 
+                                   id: monkeyId,
+                                   coords: {x:x,y:y}});
         };
 
         this.processAction = function() {
@@ -105,6 +122,7 @@ function DEMO() {
        
    
         //fsm with no accepting state
+        //Not dispatchable
         this.roam = function () {
             var maxX = fieldWidth - 32;
             var maxY = fieldHeight - 80;
@@ -174,24 +192,30 @@ function DEMO() {
                     break;
                 case d_up:
                     if(animation.y <= destinationY) { 
-                        state = d_idle;				
-                        this.setMode('idle'); 
+                        this.setArrived();
                     }
                     break;
                 case d_down:
                     if(animation.y >= destinationY) { 
-                        state = d_idle;
-                        this.setMode('idle'); 
+                        this.setArrived();
                     }
             }
             this.move(state);
+        }
+        
+        this.setArrived = function() {
+            state = d_idle;
+            this.setMode('idle');
+            this.notifyDispatcher({type:"setArrived", 
+                        id: monkeyId,
+                        coords: {x:animation.x,y:animation.y}});
         }
 
         this.setLocation = function(x,y) {
             animation.x = x;
             animation.y = y;
-            username.x = x;
-            username.y = y;
+            caption.x = x;
+            caption.y = y;
         };
    
         this.setDirection = function (direction) {
@@ -201,8 +225,9 @@ function DEMO() {
         };
    
         this.attachTo = function(stage) {
+            this.init();
             stage.addChild(animation);
-            stage.addChild(username);
+            stage.addChild(caption);
             fieldWidth = stage.canvas.width;
             fieldHeight = stage.canvas.height;
        
@@ -217,19 +242,19 @@ function DEMO() {
             switch(direction) {
                 case d_down:
                     animation.y++;
-                    username.y++;
+                    caption.y++;
                     break;
                 case d_up:
                     animation.y--;
-                    username.y--;
+                    caption.y--;
                     break;
                 case d_left:
                     animation.x--;
-                    username.x--;
+                    caption.x--;
                     break;
                 case d_right:
                     animation.x++;
-                    username.x++;
+                    caption.x++;
                     break;
                 default:
                     break;

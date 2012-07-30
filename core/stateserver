@@ -1,13 +1,31 @@
 #!/usr/bin/php
 <?php
 
+include "include/firstnames.php";
+
 $broker = new Stomp();
+$monkeyCount = 50;
 
-print_r($broker);
-
-if(! $broker->subscribe("/topic/CHAT.DEMO") ) {
+if(! $broker->subscribe("/topic/MQDEMO.MONKEYS") ) {
 	die("Could not subscribe to queue");
 };
+
+$monkeysCount = 50;
+
+
+$nameGen = new FirstNames();
+//generate initial state and monkeys;
+$monkeys = array();
+for($i = 0; $i < $monkeysCount; $i++) {
+    $id = sprintf("demomonkey_%08d",$i);
+    $monkeys[$id] = array(
+        'id' => $id,
+        'mode' =>  'idle',
+        'x' => rand(32, 700),
+        'y' => rand(32, 700),
+        'name' => $nameGen->getRandomName()
+    );
+}
 
 while(true) {
 	if($broker->hasFrame()) {

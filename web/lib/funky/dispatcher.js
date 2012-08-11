@@ -9,10 +9,19 @@
             bindings,
             dispatchInbound,
             connectHandler,
+            identifier,
+            token,
             connectionErrorHandler;
             
         dispatchInbound = function(m) {
             console.debug(m);
+        }
+
+        setAdvertized = function(nick) {
+            identifier = nick;
+            token = identifier.toString() + 
+                Math.floor(Math.random() * 1000).toString(16);
+            console.debug('It is your token now:' + token);
         }
         
         connectHandler = function(m) {
@@ -47,6 +56,8 @@
             console.debug(message);
             client.send(DEMOCONFIG.TOPIC, {}, JSON.stringify(message));
         }
+
+        this.setAdvertized = setAdvertized;
     }
     if(typeof(window) !== undefined) {
         window.DemoDispatcher = new DemoDispatcher();

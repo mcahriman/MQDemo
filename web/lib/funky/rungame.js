@@ -10,7 +10,8 @@ function RUN() {
         var w = stage.canvas.width;
         var h = stage.canvas.height - 70;
         monkey.attachTo(stage);
-        monkey.setLocation(Math.floor(w*Math.random()), Math.floor(h*Math.random()));
+        monkey.setLocation(Math.floor(w*Math.random()), 
+            Math.floor(h*Math.random()));
         monkey.removeRoamMode();
         monkey.setMode('idle');
         return monkey;

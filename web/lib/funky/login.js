@@ -5,6 +5,8 @@ $(document).ready(function(){
 		if ($('div#loginForm input').val() != "") {
 			$('div#interactionBlocker').hide();
 			$('div#loginForm').fadeOut('slow');
+			window.DemoDispatcher.setAdvertized(
+				$('div#loginForm input').val());
 		}
 	});
 	$('div#loginForm').delegate($(this), 'keydown', function(e){
@@ -12,6 +14,8 @@ $(document).ready(function(){
 			if ($('div#loginForm input').val() != "") {
 				$('div#interactionBlocker').hide();
 				$('div#loginForm').fadeOut('slow');
+				window.DemoDispatcher.setAdvertized(
+					$('div#loginForm input').val());
 			}
 		}
 	});});
